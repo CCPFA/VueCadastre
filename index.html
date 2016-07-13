@@ -95,7 +95,7 @@
         });
         var baseMaps = {
             "Ortho IGN": ign_ortho,
-            "Satellite": sat,
+            "Cartes IGN":ign_scan,
             "Topo.": Topo,
             "OpenStreetMap": osm,
             "Cadastre": cadastre
@@ -169,22 +169,30 @@
         map.addLayer(cadastresep_transp)
          //listen for cadastre_transp
         map.on('overlayadd', function(eo)
-        {
+        { 
           if( eo.name == 'Cadastre transparent' ) {
             cadastresep_transp.setOpacity(1),
-            sat.setOpacity(0.5);
+            ign_ortho.setOpacity(0.5);
+            ign_scan.setOpacity(0.7);
             osm.setOpacity(0.7);
             Topo.setOpacity(0.7);
           }
-          else {
+         else {
             cadastresep_transp.setOpacity(0);
           }
+         else if( eo.name == 'Parcelaire IGN' ) {
+            ign_ortho.setOpacity(0.5);
+            ign_scan.setOpacity(0.7);
+            osm.setOpacity(0.7);
+            Topo.setOpacity(0.7);
+          } 
         })
         map.on('overlayremove', function(eo)
         {
           if( eo.name == 'Cadastre transparent' ) {
             cadastresep_transp.setOpacity(0),
-            sat.setOpacity(1);
+            ign_ortho.setOpacity(1);
+            ign_scan.setOpacity(1);
             osm.setOpacity(1);
             Topo.setOpacity(1);
           }
