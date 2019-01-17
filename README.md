@@ -1,11 +1,5 @@
-# [VueCadastre](http://ccpfa.github.io/VueCadastre)
-Une simple page en Leaflet pour afficher le cadastre français à partir du service openstreetmaps.
+# [Vue carte](https://ccpfa2.github.io/UPM/#9/43.8048/6.2787)
+Une simple page en Leaflet pour afficher la région PACA à partir des tuiles du Géoportail de l'IGN.
+On peut importer des fichiers GeoJson.
 
-[Essayer](http://ccpfa.github.io/VueCadastre)
-
-
-utilise:
-- http://makinacorpus.github.io/Leaflet.FileLayer/
-- http://makinacorpus.github.io/Leaflet.FileLayer/togeojson/
-- https://domoritz.github.io/leaflet-locatecontrol/
-- l.control.geosearch.js
+[Essayer](https://ccpfa2.github.io/UPM/#9/43.8048/6.2787)
