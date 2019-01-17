@@ -42,7 +42,8 @@
                 geojson: this._loadGeoJSON,
                 json: this._loadGeoJSON,
                 gpx: this._convertToGeoJSON,
-                kml: this._convertToGeoJSON
+                kml: this._convertToGeoJSON,
+                txt: this._loadGeoJSON
             };
         },
 
@@ -71,7 +72,7 @@
                 try {
                     this.fire('data:loading', { filename: file.name, format: ext });
                     var layer = parser.call(this, e.target.result, ext);
-                    this.fire('data:loaded', { layer: layer, filename: file.name, format: ext });
+                    this.fire('data:loaded', { filename: file.name, format: ext, result: e.target.result });
                 } catch (err) {
                     this.fire('data:error', { error: err });
                 }
@@ -92,7 +93,7 @@
             }
 
             if (this.options.addToMap) {
-                layer.addTo(this._map);
+                //layer.addTo(this._map);
             }
             return layer;
         },
@@ -134,7 +135,7 @@
                 // Fit bounds after loading
                 if (this.options.fitBounds) {
                     window.setTimeout(function () {
-                        map.fitBounds(e.layer.getBounds());
+                        //map.fitBounds(e.layer.getBounds());
                     }, 500);
                 }
             }, this);
@@ -192,7 +193,7 @@
             fileInput.type = 'file';
             fileInput.multiple = 'multiple';
             if (!this.options.formats) {
-                fileInput.accept = '.gpx,.kml,.geojson';
+                fileInput.accept = '.gpx,.kml,.geojson,.txt';
             } else {
                 fileInput.accept = this.options.formats.join(',');
             }
