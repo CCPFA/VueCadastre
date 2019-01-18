@@ -352,9 +352,10 @@
 					d = d.replace(/[AÀÂÄ]/g,"A");
 					d = d.replace(/[IÏÎ]/g,"I");
 					d = d.replace(/[UÙÜÛ]/g,"U");
-					// console.log(d);
 					var dUp = d.toUpperCase(d);
 					if (dUp.includes("SIFON") && dUp.includes("PRELEVEMENT")){
+						data.features[j].properties["prelevement"] = "X";
+					}else if (dUp.includes("SIFON") && dUp.includes("11 C. CHARG. ET REGLEMENT D EA ")){
 						data.features[j].properties["prelevement"] = "X";
 					}
 				}
