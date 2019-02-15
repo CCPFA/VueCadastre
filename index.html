@@ -237,7 +237,6 @@
 				var p = feature.properties.PCM;
 				var nbPre = 0;
 				var d = feature.properties.prelevement;
-				
 				if (d === 'X'){
 					nbPre=nbPre+1;
 					//console.log(nbPre);
@@ -314,11 +313,12 @@
 			}
 				
 			data=JSON.parse(e.result);
-			//console.log(data);
+			// console.log(data);
 						
-			if ( typeof(data.features[1].properties.Autorisation) == 'undefined' ){
+			if ( typeof(data.features[0].properties.Autorisation) == 'undefined' ){
 				//console.log('Parcelles');
-				
+				console.log(data);
+
 				//Réinitialisation style - parcelle
 				function resetHighlight(e) {
 					var layer = e.target;
@@ -338,8 +338,7 @@
 				}
 				
 				// Remplcmt texte
-				var j;
-				for (j=0 ;j < data.features.length; j++) {
+				for (var j=0 ;j < data.features.length; j++) {
 					var d = data.features[j].properties.Description;
 					d = d.replace(/[.*+?^${}()|[\]\\]/g, '')
 					d = d.replace(/[eéèêë]/g,"e");
@@ -413,6 +412,7 @@
 				}
 				
 			}else{
+				// console.log(data);
 				var geojsonCircleOptions = {
 					  radius: 8,
 					  color: "#000",
