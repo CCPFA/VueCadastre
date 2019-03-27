@@ -136,6 +136,9 @@
 		<script type="text/javascript">
 		var CLE_IGN = "jcx786b3aad4khzcj6ld36a8";
     	var url_ign_parcelaire ="https://gpp3-wxs.ign.fr/"+CLE_IGN+"/wmts?LAYER=CADASTRALPARCELS.PARCELS&EXCEPTIONS=text/xml&FORMAT=image/png&SERVICE=WMTS&VERSION=1.0.0&REQUEST=GetTile&STYLE=bdparcellaire&TILEMATRIXSET=PM&&TILEMATRIX={z}&TILECOL={x}&TILEROW={y}";
+		var url_ign_scan = "https://gpp3-wxs.ign.fr/"+CLE_IGN+"/wmts?LAYER=GEOGRAPHICALGRIDSYSTEMS.PLANIGN&EXCEPTIONS=text/xml&FORMAT=image/jpeg&SERVICE=WMTS&VERSION=1.0.0&REQUEST=GetTile&STYLE=normal&TILEMATRIXSET=PM&&TILEMATRIX={z}&TILECOL={x}&TILEROW={y}";
+		var url_ign_ortho = "https://gpp3-wxs.ign.fr/"+CLE_IGN+"/wmts?LAYER=ORTHOIMAGERY.ORTHOPHOTOS&EXCEPTIONS=text/xml&FORMAT=image/jpeg&SERVICE=WMTS&VERSION=1.0.0&REQUEST=GetTile&STYLE=normal&TILEMATRIXSET=PM&&TILEMATRIX={z}&TILECOL={x}&TILEROW={y}";
+    
 		var ign_parcelaire = L.tileLayer(url_ign_parcelaire, {maxZoom: 21, maxNativeZoom: 20,
 							   //edgeBufferTiles: 2,
 							  //useCache: true,
@@ -143,10 +146,6 @@
 							  minZoom:14,
 							  //detectRetina: true,
 							  zIndex: 7 ,attribution : '&copy; <a href="http://www.ign.fr/">IGN</a>'});
-   // var ign_parcelaire_o = L.tileLayer(url_ign_parcelaire_o, {maxZoom: 21, maxNativeZoom: 20,
-							  //useCache: true,
-							  //crossOrigin: false,
-//							  detectRetina: true, zIndex: 7 ,attribution : '&copy; <a href="http://www.ign.fr/">IGN</a>'});
 
 		var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 21, maxNativeZoom: 19,
 			edgeBufferTiles: 2,
@@ -167,24 +166,30 @@
 			detectRetina: true,
 			attribution: 'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'});
 		
-		var sat = L.tileLayer('https://wxs.ign.fr/{apikey}/geoportail/wmts?REQUEST=GetTile&SERVICE=WMTS&VERSION=1.0.0&STYLE={style}&TILEMATRIXSET=PM&FORMAT={format}&LAYER=ORTHOIMAGERY.ORTHOPHOTOS&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}', {
-			attribution: '<a target="_blank" href="https://www.geoportail.gouv.fr/">Geoportail France</a>',
-			maxZoom: 20,
-			apikey: 'choisirgeoportail',
-			format: 'image/jpeg',
-			style: 'normal',
-			zIndex:9,
-			opacity: 0.5
-		});
-			
 		var carthage = L.tileLayer('https://a.tile.openstreetmap.fr/route500hydro/{z}/{x}/{y}.png', {maxZoom: 19,
 			detectRetina: false, zIndex: 8, attribution: '&copy; IGN, BD Carthage' });
-			
+		
+		var ign_scan = L.tileLayer(url_ign_scan, {maxZoom: 21, maxNativeZoom: 18,
+			edgeBufferTiles: 2,
+			//useCache: true,
+			//crossOrigin: false,
+			//detectRetina: true,
+			attribution : '&copy; <a href="http://www.ign.fr/">IGN</a>'});
+		
+		var ign_ortho = L.tileLayer(url_ign_ortho, {maxZoom: 21, maxNativeZoom: 19,
+			//edgeBufferTiles: 2,
+			//useCache: true,
+			//crossOrigin: false,
+			//detectRetina: true,
+			attribution : '&copy; <a href="http://www.ign.fr/">IGN</a>'});
+
+						
 		var baseMaps = {
 			"OSM": osm,
 			"OSM Clair": osm_light,
 			"OSM Sombre": osm_dark,
-			"Vue aérienne": sat,
+			"Ortho IGN":ign_ortho,
+			"Cartes IGN":ign_scan,
 			"Topo" : Topo
 		};
 
@@ -197,7 +202,7 @@
 			center: [46.5,2.34],
 			zoom: 9,
 			center: [43.8048,6.2787],
-			layers: [osm_light, ign_parcelaire]
+			layers: [osm_light,ign_parcelaire ]
 		});
 		
 		var hash = new L.Hash(map);
@@ -237,6 +242,7 @@
 				var p = feature.properties.PCM;
 				var nbPre = 0;
 				var d = feature.properties.prelevement;
+				
 				if (d === 'X'){
 					nbPre=nbPre+1;
 					//console.log(nbPre);
@@ -313,12 +319,11 @@
 			}
 				
 			data=JSON.parse(e.result);
-			// console.log(data);
+			console.log(data);
 						
-			if ( typeof(data.features[0].properties.Autorisation) == 'undefined' ){
-				//console.log('Parcelles');
-				console.log(data);
-
+			if ( typeof(data.features[1].properties.Autorisation) == 'undefined' ){
+				console.log('Parcelles');
+				
 				//Réinitialisation style - parcelle
 				function resetHighlight(e) {
 					var layer = e.target;
@@ -338,7 +343,8 @@
 				}
 				
 				// Remplcmt texte
-				for (var j=0 ;j < data.features.length; j++) {
+				var j;
+				for (j=0 ;j < data.features.length; j++) {
 					var d = data.features[j].properties.Description;
 					d = d.replace(/[.*+?^${}()|[\]\\]/g, '')
 					d = d.replace(/[eéèêë]/g,"e");
@@ -351,10 +357,9 @@
 					d = d.replace(/[AÀÂÄ]/g,"A");
 					d = d.replace(/[IÏÎ]/g,"I");
 					d = d.replace(/[UÙÜÛ]/g,"U");
+					// console.log(d);
 					var dUp = d.toUpperCase(d);
 					if (dUp.includes("SIFON") && dUp.includes("PRELEVEMENT")){
-						data.features[j].properties["prelevement"] = "X";
-					}else if (dUp.includes("SIFON") && dUp.includes("REGLEMENT D EA")){
 						data.features[j].properties["prelevement"] = "X";
 					}
 				}
@@ -379,8 +384,9 @@
 					minLength: 0,					//minimal text length for autocomplete
 					casesensitive: false,			//search elements in case sensitive text
 					autoType: true,
-					firstTipSubmit: true,			//auto select first result con enter click
+					firstTipSubmit: false,			//auto select first result con enter click
 					autoResize: true,
+					autoCollapse: true,
 					tooltipLimit: 10,
 					moveToLocation: function(latlng, title, map) {
 						map.setView(latlng);
@@ -393,8 +399,8 @@
 				var legend = L.control({position: 'bottomright'});
 				legend.onAdd = function (map) {
 					var div = L.DomUtil.create('div', 'info legend'),
-						couleurs = ['#008000', '#ffa07a', '#da70d6', '#666','#ffff00','#ff0000','blue'],
-						valeurs = ['Privé', 'Concédé', 'Mixte', 'Tiers','Écart','Absence',"Prélèvement d'eau connu"],
+						couleurs = ['#008000', '#ffa07a', '#da70d6', '#666','#ffff00','#ff0000'],
+						valeurs = ['Privé', 'Concédé', 'Mixte', 'Tiers','Écart','Absence'],
 						labels = ['<strong>Légende parcellaire:</strong>']
 
 					for (var i = 0; i < couleurs.length; i++) {
@@ -412,7 +418,6 @@
 				}
 				
 			}else{
-				// console.log(data);
 				var geojsonCircleOptions = {
 					  radius: 8,
 					  color: "#000",
@@ -465,6 +470,7 @@
 					autoResize: true,
 					tooltipLimit: 10,
 					moveToLocation: function(latlng, title, map) {
+						//var zoom = map.getBoundsZoom(latlng.layer.getBounds());
 						map.setView(latlng);
 					}
 				});
@@ -515,17 +521,17 @@
 		//----------Objets de dessin-----------------
 		//Param marqueurs
 		var greenIcon = new L.Icon({
-		  iconUrl: './src/img/marker-icon-green.png',
+		  iconUrl: './img/marker-icon-green.png',
 		  iconAnchor: [12, 41],
 		  popupAnchor: [1, -34],
 		});
 		var redIcon = new L.Icon({
-		  iconUrl: './src/img/marker-icon-red.png',
+		  iconUrl: './img/marker-icon-red.png',
 		  iconAnchor: [12, 41],
 		  popupAnchor: [1, -34],
 		});
 		var orangeIcon = new L.Icon({
-		  iconUrl: './src/img/marker-icon-orange.png',
+		  iconUrl: './img/marker-icon-orange.png',
 		  iconAnchor: [12, 41],
 		  popupAnchor: [1, -34],
 		});
