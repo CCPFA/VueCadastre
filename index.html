@@ -200,8 +200,7 @@
 
 		var map = L.map('map', {
 			center: [46.226107, 2.214151],
-			zoom: 9,
-			center: [43.8048,6.2787],
+			zoom: 12,
 			layers: [osm_light,ign_parcelaire ]
 		});
 		
@@ -226,6 +225,14 @@
 		
 		control.loader.on('data:loaded', function (e) {
 			//Surbrillance
+			var logo = L.control({position: 'bottomleft'});
+				logo.onAdd = function(map){
+					var div = L.DomUtil.create('div', 'myclass');
+					div.innerHTML= "<img src='./images/Logo_pfa.png'/ width=150>";
+					return div;
+				}
+			logo.addTo(map);
+			
 			function highlightFeature(e) {
 				var layer = e.target;
 				layer.setStyle({
