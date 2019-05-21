@@ -3,7 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no", charset="UTF-8" />
     <meta http-equiv="x-ua-compatible" content="IE=edge" >
-	<title>UPM</title>
+	<title>Droits d'eau</title>
     <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css' rel='stylesheet' />
     <link href='https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css' rel='stylesheet' />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" />
@@ -109,9 +109,9 @@
 		<div id="dialogoverlay"></div>
 		<div id="dialogbox">
 		  <div>
-			<span> Saisir le nom ou la zone du prélèvement : </span><br/>
+			<span> Saisir le nom ou la zone du droit d'eau : </span><br/>
 			<input type="text" id="name"  size="50" onchange="changemt()" ><br/><br/>
-			<span> Le prélèvement est-il autorisé ?<br></span>
+			<span> Le pompage est-il autorisé ?<br></span>
 			<select id="auto">
 			  <option value="oui">Oui
 			  <option value="non">Non
@@ -754,7 +754,7 @@
 				console.log(e.layer.feature);
 				
 			myLayerGroup.addLayer(e.layer);
-			e.layer.bindTooltip("<span style='font-size:14px'><b>Prélèvement d'eau : "+nom+"</b></br></br> Autorisé : "+autorisation+"</br> Observations : "+commentaire+"</span>");
+			e.layer.bindTooltip("<span style='font-size:14px'><b>Droit d'eau : "+nom+"</b></br></br> Autorisé : "+autorisation+"</br> Observations : "+commentaire+"</span>");
 			
 		});
 		
