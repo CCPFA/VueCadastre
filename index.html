@@ -200,7 +200,7 @@
 
 		var map = L.map('map', {
 			center: [46.226107, 2.214151],
-			zoom: 12,
+			zoom: 7,
 			layers: [osm_light,ign_parcelaire ]
 		});
 		
@@ -231,6 +231,7 @@
 					div.innerHTML= "<img src='./images/Logo_pfa.png'/ width=150>";
 					return div;
 				}
+			console.log(logo);
 			logo.addTo(map);
 			
 			function highlightFeature(e) {
