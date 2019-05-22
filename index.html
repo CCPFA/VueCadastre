@@ -228,12 +228,11 @@
 			div.innerHTML= "<img src='images/Logo_PFA.png'/ width=150>";
 			return div;
 		}
-			
-		logo.addTo(map);
-			
-		console.log(logo);
+		var logo_loaded = 0;
 			
 		control.loader.on('data:loaded', function (e) {
+			if (logo_loaded == 0){logo.addTo(map);}
+			logo_loaded=1;
 			//Surbrillance		
 			function highlightFeature(e) {
 				var layer = e.target;
