@@ -231,8 +231,7 @@
 		var logo_loaded = 0;
 			
 		control.loader.on('data:loaded', function (e) {
-			if (logo_loaded == 0){logo.addTo(map);}
-			logo_loaded=1;
+			
 			//Surbrillance		
 			function highlightFeature(e) {
 				var layer = e.target;
@@ -508,6 +507,8 @@
 					//console.log(map.legenddisplay)
 					map.legenddisplay = this;}
 			}
+			if (logo_loaded == 0){logo.addTo(map);}
+			logo_loaded=1;
 		});
 
 		L.control.scale({imperial: false}).addTo(map);
